@@ -1,0 +1,31 @@
+name: FastAPI RBAC demo tests
+
+on:
+  pull_request:
+    paths:
+      - "showcase/fastapi-rbac/**"
+      - ".github/workflows/fastapi-rbac-demo.yml"
+  push:
+    branches: [main]
+    paths:
+      - "showcase/fastapi-rbac/**"
+      - ".github/workflows/fastapi-rbac-demo.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: showcase/fastapi-rbac
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: python -m pip install -e ".[dev]"
+      - name: Run permission tests
+        run: python -m pytest -q

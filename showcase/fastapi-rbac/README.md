@@ -7,7 +7,7 @@ A compact, original engineering demonstration built for a public portfolio. It i
 - Verifies signed JWT bearer tokens with explicit algorithm, issuer, audience and expiry checks.
 - Takes tenant identity and user role from validated token claims, **not** untrusted request parameters.
 - Separates organisations by tenant ID; a cross-tenant resource lookup returns 404.
-- Allows viewers to read and editors/admins to create or update records.
+- Allows viewers to read and editors/admins to create or partially update records.
 - Rejects unauthenticated and unauthorised requests with clear status codes.
 - Includes automated tests for isolation, permissions, invalid tokens and normal usage.
 
@@ -36,7 +36,7 @@ python -m pytest -q
 python -m uvicorn app.main:app --reload
 ```
 
-Open http://127.0.0.1:8000/docs for API documentation. Tests construct their own short-lived JWTs; no real authentication account is needed. For manual API access, use a signed JWT with issuer `portfolio-demo`, audience `tenant-api`, and `sub`, `tenant_id`, `role`, and `exp` claims.
+Open http://127.0.0.1:8000/docs for API documentation. Tests construct their own short-lived JWTs; no real authentication account is needed. For manual API access, use a signed JWT with issuer `portfolio-demo`, audience `tenant-api`, and `sub`, `tenant_id`, `role`, `iat`, and `exp` claims.
 
 ## API surface
 

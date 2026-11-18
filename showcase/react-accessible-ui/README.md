@@ -6,7 +6,7 @@ An original public portfolio demonstration, not client code. A small, responsive
 
 - React + TypeScript + Tailwind CSS with a Vite build.
 - Search and status filters with native form controls and accessible labels.
-- Keyboard-accessible project links, visible focus rings and screen-reader result counts.
+- Keyboard-accessible native filters, visible focus rings and screen-reader result counts.
 - Derived filtering rather than duplicated state; empty-result feedback.
 - Separated pure filtering logic and unit tests.
 - Fictional records; no external API, analytics, credentials or personal information.

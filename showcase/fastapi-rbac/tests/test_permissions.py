@@ -87,6 +87,30 @@ def test_admin_can_update_same_tenant() -> None:
         documents["demo-a"] = original
 
 
+def test_patch_preserves_omitted_fields() -> None:
+    original = documents["demo-a"]
+    try:
+        response = client.patch(
+            "/documents/demo-a",
+            headers=headers("tenant-a", "editor"),
+            json={"title": "Updated title only"},
+        )
+        assert response.status_code == 200
+        assert response.json()["title"] == "Updated title only"
+        assert response.json()["body"] == original.body
+    finally:
+        documents["demo-a"] = original
+
+
+def test_patch_rejects_null_field() -> None:
+    response = client.patch(
+        "/documents/demo-a",
+        headers=headers("tenant-a", "editor"),
+        json={"body": None},
+    )
+    assert response.status_code == 422
+
+
 def test_caller_cannot_override_tenant_with_request_body() -> None:
     response = client.post(
         "/documents",

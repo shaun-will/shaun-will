@@ -9,7 +9,7 @@ import jwt
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jwt import InvalidTokenError
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field, ValidationError, field_validator
 
 app = FastAPI(title="Tenant-safe document API (demo)", version="0.1.0")
 bearer = HTTPBearer(auto_error=False)
@@ -31,6 +31,19 @@ class DocumentInput(BaseModel):
 class Document(DocumentInput):
     id: str
     tenant_id: str
+
+
+class DocumentPatch(BaseModel):
+    """Partial changes: omitted fields remain unchanged; explicit null is rejected."""
+    title: str | None = Field(default=None, min_length=1, max_length=120)
+    body: str | None = Field(default=None, min_length=1, max_length=5000)
+
+    @field_validator("title", "body")
+    @classmethod
+    def reject_null(cls, value: str | None) -> str:
+        if value is None:
+            raise ValueError("A provided field cannot be null")
+        return value
 
 
 # Illustrative in-memory records. Do not use an in-memory store for production.
@@ -118,10 +131,11 @@ def create_document(
 @app.patch("/documents/{document_id}", response_model=Document)
 def update_document(
     document_id: str,
-    payload: DocumentInput,
+    payload: DocumentPatch,
     principal: Principal = Depends(require_editor),
 ) -> Document:
     current = visible_document(document_id, principal)
-    updated = current.model_copy(update=payload.model_dump())
+    changes = payload.model_dump(exclude_unset=True)
+    updated = Document.model_validate({**current.model_dump(), **changes})
     documents[document_id] = updated
     return updated

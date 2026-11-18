@@ -35,6 +35,13 @@ Built an animation-rich, responsive annual report under a demanding public-secto
 ### HOUSEBOARD — Private Project
 Developing a multi-user household platform with shared data, Supabase authentication, differentiated permissions and a React Native/Expo Android companion application. Source code is private.
 
+## Public engineering demonstrations
+
+These are original, self-contained examples created for code review. They use fictional data and do not expose private project source code.
+
+- [FastAPI authorization & tenant isolation](showcase/fastapi-rbac/README.md) — Python, JWT claim validation, role-based permissions, multi-tenant scoping and automated security tests.
+- [Accessible React project explorer](showcase/react-accessible-ui/README.md) — React, TypeScript, Tailwind CSS, accessible filters and automated UI logic tests.
+
 ## How I work
 
 I value clear scope, transparent communication, sound technical decisions and ownership beyond launch. Earlier experience in supplier and project coordination at Rolls-Royce Aerospace continues to inform my approach to engineering delivery.
